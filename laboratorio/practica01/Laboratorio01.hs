@@ -18,7 +18,9 @@ aplicaTresVeces f x = f (f (f x))
 
 
 
--- varianza2 :: Double -> Double -> Double
+varianza2 :: Double -> Double -> Double
+varianza2 x y = (((x - media) ^2) + ((y - media) ^2))/2
+  where media = (x+y)/2
 
 
 
