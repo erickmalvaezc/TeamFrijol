@@ -34,7 +34,7 @@ clasificaTemperatura n
 
   
 intercala :: a -> [a] -> [a]
-intercala x [] = []
+-- intercala x [] = []
 intercala y (x:xs) = x : auxi1 y xs
 
 auxi1 :: a -> [a] -> [a]
