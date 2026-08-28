@@ -34,6 +34,25 @@ import Lexer (Token(..), lexer)
 
 ASA : nat                      { Num $1 }
     | bool                     { Boolean $1 }
+    | '(' "expt" ASA ASA ')'   { Expt $3 $4 }
+    | '(' "eq" ASA ASA ')'     { EqP $3 $4 }
+    | '(' "not" ASA ')'        { Not $3 }
+    | '(' "add1" ASA ')'       { Add1 $3 }
+    | '(' "sub1" ASA ')'       { Sub1 $3 }
+    | '(' "zero?" ASA ')'      { ZeroP $3 }
+    | '(' "and" Auxi2 ')'      { And $3 }
+    | '(' "or" Auxi2 ')'       { Or $3 }
+    | '(' '+' Auxi2 ')'        { Add $3 }
+    | '(' '-' Auxi2 ')'        { Sub $3 }
+    | '(' '*' Auxi2 ')'        { Mul $3 }
+    | '(' '/' Auxi2 ')'        { Div $3 }
+    | '(' '<' Auxi2 ')'        { Lt $3 }
+    | '(' '>' Auxi2 ')'        { Gt $3 }
+    | '(' "<=" Auxi2 ')'       { Le $3 }
+    | '(' "<=" Auxi2 ')'       { Ge $3 }
+
+
+
 
 -- RETO 2:
 -- Agrega las producciones para:
@@ -44,6 +63,9 @@ ASA : nat                      { Num $1 }
 -- RETO 3:
 -- Agrega un no terminal para representar dos o mas argumentos.
 -- El resultado debe ser una lista de ASA.
+Auxi2 : ASA ASA           { [$1, $2] }
+      | ASA Auxi2         { $1 : $2}
+
 
 {
 parseError :: [Token] -> a
