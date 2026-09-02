@@ -41,8 +41,8 @@ tokens :-
   expt                  { \_ -> TokenExpt}
   \<                    { \_ -> TokenLT}
   \>                    { \_ -> TokenGT}
-  \<=                   { \_ -> TokenLE}
-  \>=                   { \_ -> TokenGE}
+  "<="                  { \_ -> TokenLE}
+  ">="                  { \_ -> TokenGE}
   eq                    { \_ -> TokenEq}
   add1                  { \_ -> TokenAdd1}
   sub1                  { \_ -> TokenSub1}
