@@ -54,8 +54,8 @@ ASA : nat                           { Num $1 }
     | '(' "sub1" ASA ')'            { Sub1 $3 }
     | '(' "zero?" ASA ')'           { ZeroP $3 }
     | id                            { Id $1 }
-    | '(' "let" Bindings ASA ')'    { Let $3 }
-    | '(' "let*" Bindings ASA ')'   { LetStar $3 }
+    | '(' "let" '(' Bindings ')' ASA ')'    { Let $4 $6 }
+    | '(' "let*" '(' Bindings ')' ASA ')'   { LetStar $4 $6 }
 
 -- RETO 2
 -- Completa las producciones para:
@@ -82,7 +82,7 @@ type Binding = (String, ASA)
 
 data ASA
   = Id String
-  | Num Int
+  | Num Int |
   | Boolean Bool
   | And [ASA]
   | Or [ASA]
