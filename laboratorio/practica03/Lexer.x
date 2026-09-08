@@ -52,7 +52,7 @@ tokens :-
 
   "let"                 { \_ -> TokenLet }
   "let*"                { \_ -> TokenLetStar }
-  @id                   { \s -> TokenId (read s) }
+  @id                   { \s -> TokenId s }
 
   .                     { \s -> error ("Lexical error: caracter no reconocido = "
                                       ++ show s
