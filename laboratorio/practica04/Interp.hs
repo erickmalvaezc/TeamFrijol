@@ -71,6 +71,10 @@ desugar (AppS f args) = do
 
 -- Busca la asociacion mas reciente de un identificador.
 lookupEnv :: Nombre -> Env -> Maybe Value
+lookupEnv _ [] = Nothing
+lookupEnv x ((y, v) : rest)
+  | x == y = Just v
+  | otherwise = lookupEnv x rest
 
 -- Evalua con alcance estatico. Fun produce una cerradura con el ambiente
 -- actual. App evalua primero la posicion de funcion, despues el argumento y
@@ -79,3 +83,30 @@ lookupEnv :: Nombre -> Env -> Maybe Value
 -- Conserva la resta truncada y la convencion de que todo numero cuenta como
 -- verdadero cuando aparece como operando de Not.
 bigStep :: Env -> ASA -> Maybe Value
+bigStep env (Id x) = lookupEnv x env
+bigStep _ (Num n) = Just (NumV n)
+bigStep _ (Boolean b) = Just (BooleanV b)
+bigStep env (Add l r) = do
+  NumV a <- bigStep env l
+  NumV b <- bigStep env r
+  Just (NumV (a + b))
+bigStep env (Sub l r) = do
+  NumV a <- bigStep env l
+  NumV b <- bigStep env r
+  Just (NumV (max 0 (a - b)))
+bigStep env (Not e) = do
+  v <- bigStep env e
+  case v of
+    BooleanV b -> Just (BooleanV (not b))
+    NumV _ -> Just (BooleanV False)
+    _ -> Nothing
+bigStep env (Fun x body) = Just (ClosureV x body env)
+bigStep env (App function argument) = do
+  closureValue <- bigStep env function
+  case closureValue of
+    ClosureV parameter body definitionEnv -> do
+      argumentValue <- bigStep env argument
+      seq parameter
+        (seq argumentValue
+          (bigStep ((parameter, argumentValue) : definitionEnv) body))
+    _ -> Nothing
