@@ -9,10 +9,17 @@ potencia base exponente =
   base * potencia base (exponente - 1)
 
 potenciaCola :: Int -> Int -> Int
-potenciaCola = undefined
+potenciaCola base exponente = auxiliar base exponente 1
+  where
+    auxiliar base 0 acumulador = acumulador
+    auxiliar base exponente acumulador =
+      auxiliar base (exponente - 1) (base * acumulador)
+
 
 potenciaCPS :: Int -> Int -> (Int -> r) -> r
-potenciaCPS = undefined
+potenciaCPS base 0 k = k 1
+potenciaCPS base exponente k =
+  potenciaCPS base (exponente - 1) (\resultado -> k (base * resultado))
 
 -- 2. Longitud de una lista -------------------------------------------------
 
