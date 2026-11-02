@@ -9,17 +9,16 @@ potencia base exponente =
   base * potencia base (exponente - 1)
 
 potenciaCola :: Int -> Int -> Int
-potenciaCola base exponente = auxiliar base exponente 1
+potenciaCola n m = potenciaCola' n m 1
   where
-    auxiliar base 0 acumulador = acumulador
-    auxiliar base exponente acumulador =
-      auxiliar base (exponente - 1) (base * acumulador)
-
+    potenciaCola' :: Int -> Int -> Int -> Int 
+    potenciaCola' _ 0 acc = acc
+    potenciaCola' n m acc = potenciaCola' n (m - 1) (n * acc)
 
 potenciaCPS :: Int -> Int -> (Int -> r) -> r
-potenciaCPS base 0 k = k 1
-potenciaCPS base exponente k =
-  potenciaCPS base (exponente - 1) (\resultado -> k (base * resultado))
+potenciaCPS n 0 k = k 1
+potenciaCPS n m k =
+  potenciaCPS n (m - 1) (\resultado -> k (n * resultado))
 
 -- 2. Longitud de una lista -------------------------------------------------
 
@@ -81,10 +80,14 @@ intercala (x : xs) (y : ys) =
   x : y : intercala xs ys
 
 intercalaCola :: [a] -> [a] -> [a]
-intercalaCola [] ys = acumulador ys 
-intercalaCola xs [] = acumulador xs 
+intercalaCola xs ys = auxiliar xs ys []
   where
-    auxiliar [] 
+    auxiliar [] ys acumulador = acumulador ++ ys 
+    auxiliar xs [] acumulador = acumulador ++ xs 
+    auxiliar (x : xs) (y : ys) acumulador = auxiliar xs ys (acumulador ++ [x, y]) 
 
 intercalaCPS :: [a] -> [a] -> ([a] -> r) -> r
-intercalaCPS = undefined
+intercalaCPS [] ys k = k ys
+intercalaCPS xs [] k = k xs
+intercalaCPS (x : xs) (y : ys) k =
+  intercalaCPS xs ys (\resultado -> k (x : y : resultado))
