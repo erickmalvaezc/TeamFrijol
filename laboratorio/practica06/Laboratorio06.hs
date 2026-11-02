@@ -17,8 +17,7 @@ potenciaCola n m = potenciaCola' n m 1
 
 potenciaCPS :: Int -> Int -> (Int -> r) -> r
 potenciaCPS n 0 k = k 1
-potenciaCPS n m k =
-  potenciaCPS n (m - 1) (\resultado -> k (n * resultado))
+potenciaCPS n m k = potenciaCPS n (m - 1) (\resultado -> k (n * resultado))
 
 -- 2. Longitud de una lista -------------------------------------------------
 
@@ -51,8 +50,7 @@ reversaCola xs = auxiliar xs []
 
 reversaCPS :: [a] -> ([a] -> r) -> r
 reversaCPS [] k = k []
-reversaCPS (x : xs) k =
-  reversaCPS xs (\resultado -> k (resultado ++ [x]))
+reversaCPS (x : xs) k = reversaCPS xs (\resultado -> k (resultado ++ [x]))
 
 -- 4. Concatenacion de una lista de listas ---------------------------------
 
@@ -68,8 +66,7 @@ concatenaCola xs = auxiliar xs []
 
 concatenaCPS :: [[a]] -> ([a] -> r) -> r
 concatenaCPS [] k = k []
-concatenaCPS (xs : xss) k =
-  concatenaCPS xss (\resultado -> k (xs ++ resultado))
+concatenaCPS (xs : xss) k = concatenaCPS xss (\resultado -> k (xs ++ resultado))
 
 -- 5. Intercalado de dos listas --------------------------------------------
 
@@ -89,5 +86,4 @@ intercalaCola xs ys = auxiliar xs ys []
 intercalaCPS :: [a] -> [a] -> ([a] -> r) -> r
 intercalaCPS [] ys k = k ys
 intercalaCPS xs [] k = k xs
-intercalaCPS (x : xs) (y : ys) k =
-  intercalaCPS xs ys (\resultado -> k (x : y : resultado))
+intercalaCPS (x : xs) (y : ys) k = intercalaCPS xs ys (\resultado -> k (x : y : resultado))
